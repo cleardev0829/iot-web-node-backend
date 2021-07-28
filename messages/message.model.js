@@ -20,6 +20,7 @@ const schema = new Schema({
         "inLevel": { type: Number },
         "trips": { type: Number },
         "dest": { type: Number },
+        "lcd": { type: Number },
         "text": { type: String },
     },
     status: { type: Boolean, default: false },
