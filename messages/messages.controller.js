@@ -4,6 +4,7 @@ const messageService = require('./message.service');
 
 // routes
 router.post('/register', register);
+router.post('/registerA', registerA);
 router.get('/', getAll);
 router.get('/getByDeviceId', getByDeviceId);
 router.get('/getByLog', getByLog);
@@ -16,6 +17,12 @@ module.exports = router;
 
 function register(req, res, next) { 
     messageService.create(req.body)
+        .then(() => res.json({}))
+        .catch(err => next(err));
+}
+
+function registerA(req, res, next) { 
+    messageService.createA(req.body)
         .then(() => res.json({}))
         .catch(err => next(err));
 }
