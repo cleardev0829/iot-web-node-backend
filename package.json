@@ -9,7 +9,8 @@
     },
     "scripts": {
         "start": "node ./server.js",
-        "start:dev": "nodemon ./server.js"
+        "start:dev": "nodemon ./server.js",
+        "dev": "nodemon -r dotenv/config server.js"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
@@ -28,6 +29,7 @@
         "twilio": "^3.63.0"
     },
     "devDependencies": {
-        "nodemon": "^2.0.4"
+        "nodemon": "^2.0.4",
+        "dotenv": "^8.2.0"
     }
 }
