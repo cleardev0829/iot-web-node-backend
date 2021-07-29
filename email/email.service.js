@@ -72,7 +72,8 @@ function sendMailOverHTTP(params) {
 
 async function iotHubMsgProc(params) {
   const log = params.message.log;
-  if (log !== "error") {
+  
+  if (log === "error") {
     const id = params.id;
     const deviceId = params.message.ID;
     const state = params.message.state ? params.message.state : 0;
