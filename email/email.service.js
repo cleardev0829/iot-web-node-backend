@@ -98,7 +98,7 @@ async function iotHubMsgProc(params) {
 
                   sendSMSOverHTTPA({
                     phone,
-                    message: `Error message from ${deviceId}`,
+                    message: `Error message(${description}) from ${deviceId}`,
                   })
                     .then((data) => {
                       // console.log(data);
