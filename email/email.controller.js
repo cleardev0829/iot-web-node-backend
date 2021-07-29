@@ -6,6 +6,7 @@ const cors = require("cors")({ origin: true });
 
 // routes
 router.post("/sendSMSOverHTTP", sendSMSOverHTTP);
+router.post("/sendSMSOverHTTPA", sendSMSOverHTTPA);
 router.post("/sendMailOverHTTP", sendMailOverHTTP);
 
 module.exports = router;
@@ -31,6 +32,13 @@ function sendSMSOverHTTP(req, res, next) {
     .then((data) => res.json(data))
     .catch((err) => next(err));
 }
+
+function sendSMSOverHTTPA(req, res, next) {
+    mailService
+      .sendSMSOverHTTPA(req.body)
+      .then((data) => res.json(data))
+      .catch((err) => next(err));
+  }
 
 function sendMailOverHTTP(req, res, next) {
   mailService

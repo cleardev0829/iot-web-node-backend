@@ -25,11 +25,10 @@ const transporter = nodemailer.createTransport({
 function sendSMSOverHTTP(params) {
   const client = require("twilio")(accountSid, authToken);
   const phone = params.phone;
-  const name = params.name;
   const message = params.message;
 
   const body = `
-      Hi ${name}.
+      Hi
       Occured some error from your device. 
       The error is like follow.
       ${message}
@@ -38,7 +37,7 @@ function sendSMSOverHTTP(params) {
   return client.messages.create({
     body: body,
     from: "+436505050180",
-    to: "+43650505018",
+    to: phone,
   });
 }
 
