@@ -58,6 +58,6 @@ function sendSMSOverHTTP(req, res) {
 function sendMailOverHTTP(req, res, next) {
   mailService
     .sendMailOverHTTP(req.body)
-    .then((response) => console.log("---response", response))
-    .catch((err) => next(err));
+    .then((response) => res.json(response))
+    .catch((err) => console.log('err', err));
 }
