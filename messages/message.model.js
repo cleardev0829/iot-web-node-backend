@@ -23,7 +23,7 @@ const schema = new Schema({
         "lcd": { type: Number },
         "text": { type: String },
     },
-    status: { type: Boolean, default: false },
+    status: { type: Boolean, default: true },
 });
 
 schema.set('toJSON', {
