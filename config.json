@@ -1,7 +1,7 @@
 ﻿{
-    "connectionString3": "mongodb://localhost/rocket",
+    "connectionString": "mongodb://localhost/rocket",
     "connectionString2": "mongodb://rocket-storage:9ZyqJUDU8HOQnPmX1EIGNMA2f21pSZ48M4BfvXRyJBHT3Lr8SiTpAtAOdBBO4wSse9o034hqnAtTcXT40NmghQ==@rocket-storage.documents.azure.com:10255/rocketiot?ssl=true&replicaSet=globaldb",
     "connectionString1": "mongodb://rocket-storage:9ZyqJUDU8HOQnPmX1EIGNMA2f21pSZ48M4BfvXRyJBHT3Lr8SiTpAtAOdBBO4wSse9o034hqnAtTcXT40NmghQ==@rocket-storage.documents.azure.com:10255/?ssl=true&replicaSet=globaldb",
-    "connectionString": "mongodb://rocketdb:OyQ4SRefcwLfqRlr7JQScY4qZguX9Tnc4atYptXYyVPmTa08CeOFjvJl0AmXAYayWMwWRqyQ3DJzvrIrzxBYug==@rocketdb.mongo.cosmos.azure.com:10255/rocketiot?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@rocketdb@",
+    "connectionString3": "mongodb://rocketdb:OyQ4SRefcwLfqRlr7JQScY4qZguX9Tnc4atYptXYyVPmTa08CeOFjvJl0AmXAYayWMwWRqyQ3DJzvrIrzxBYug==@rocketdb.mongo.cosmos.azure.com:10255/rocketiot?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@rocketdb@",
     "secret": "THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING"
 }
