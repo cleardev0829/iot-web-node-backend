@@ -96,9 +96,9 @@ async function iotHubMsgProc(params) {
                   const name = userInfo.displayName;
                   const email = userInfo.email;
 
-                  if(description === '') {
+                  // if(description === '') {
                     description = 'Test error';
-                  }
+                  // }
 
                   sendSMSOverHTTPA({
                     phone,
