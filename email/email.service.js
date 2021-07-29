@@ -1,5 +1,11 @@
 ﻿const axios = require("axios");
 const nodemailer = require("nodemailer");
+const constant = require("../utils/constant");
+
+const messageService = require("../messages/message.service");
+const productService = require("../products/product.service");
+const userService = require("../users/user.service");
+const Pricing = require("twilio/lib/rest/Pricing");
 
 const accountSid = "AC0b6ed65b3b28b81e5816eeb39c2e30cd";
 const authToken = "59c24ba047f4732df8791cd093f3901b";
@@ -8,6 +14,7 @@ module.exports = {
   sendSMSOverHTTP,
   sendSMSOverHTTPA,
   sendMailOverHTTP,
+  iotHubMsgProc,
 };
 
 const transporter = nodemailer.createTransport({
@@ -61,4 +68,71 @@ function sendMailOverHTTP(params) {
   };
 
   return transporter.sendMail(mailOptions);
+}
+
+async function iotHubMsgProc(params) {
+  const log = params.message.log;
+  if (log !== "error") {
+    const id = params.id;
+    const deviceId = params.message.ID;
+    const state = params.message.state ? params.message.state : 0;
+    const errid = params.message.errid ? params.message.errid : 0;
+    const number = log === "info" ? state : log === "error" ? errid : 0;
+    const description = "constant.descriptions[log][number]";
+
+    productService.getByUID({ uid: deviceId }).then(async (data) => {
+      if (data && data.categories) {
+        const users = data.categories;
+        let promises = [];
+
+        promises.push(
+          new Promise((resolve, reject) =>
+            users.map(async (userId) => {
+              await userService.getById(userId).then(async (userInfo) => {
+                if (userInfo && userInfo.phone) {
+                  const phone = userInfo.phone;
+                  const name = userInfo.displayName;
+                  const email = userInfo.email;
+
+                  sendSMSOverHTTPA({
+                    phone,
+                    message: `Error message from ${deviceId}`,
+                  })
+                    .then((data) => {
+                      // console.log(data);
+                      resolve(data);
+                    })
+                    .catch((err) => {
+                      // console.log(err);
+                      reject(err);
+                    });
+
+                  sendMailOverHTTP({
+                    email: email,
+                    subject: `Error message from ${deviceId}`,
+                    emailBody: `<h3>${number} - ${description}</h3>`,
+                  })
+                    .then((data) => {
+                      // console.log(data.data);
+                      resolve(data);
+                    })
+                    .catch((err) => {
+                      // console.log(err);
+                      reject(err);
+                    });
+
+                  console.log("-----", email);
+                }
+              });
+            })
+          )
+        );
+
+        Promise.all(promises).then((res) => {
+          console.log("----- Promise.all->", "OK");
+          return messageService.createA(params);
+        });
+      }
+    });
+  }
 }

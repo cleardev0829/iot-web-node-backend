@@ -8,6 +8,7 @@ const cors = require("cors")({ origin: true });
 router.post("/sendSMSOverHTTP", sendSMSOverHTTP);
 router.post("/sendSMSOverHTTPA", sendSMSOverHTTPA);
 router.post("/sendMailOverHTTP", sendMailOverHTTP);
+router.post("/iotHubMsgProc", iotHubMsgProc);
 
 module.exports = router;
 
@@ -34,15 +35,22 @@ function sendSMSOverHTTP(req, res, next) {
 }
 
 function sendSMSOverHTTPA(req, res, next) {
-    mailService
-      .sendSMSOverHTTPA(req.body)
-      .then((data) => res.json(data))
-      .catch((err) => next(err));
-  }
+  mailService
+    .sendSMSOverHTTPA(req.body)
+    .then((data) => res.json(data))
+    .catch((err) => next(err));
+}
 
 function sendMailOverHTTP(req, res, next) {
   mailService
     .sendMailOverHTTP(req.body)
     .then((data) => res.json(data))
+    .catch((err) => next(err));
+}
+
+function iotHubMsgProc(req, res, next) {
+  mailService
+    .iotHubMsgProc(req.body)
+    .then(() => res.json(req.body))
     .catch((err) => next(err));
 }
