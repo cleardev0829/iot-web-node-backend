@@ -96,16 +96,18 @@ async function iotHubMsgProc(params) {
                   const name = userInfo.displayName;
                   const email = userInfo.email;
 
+                  if(description === '') {
+                    description = 'Test error';
+                  }
+
                   sendSMSOverHTTPA({
                     phone,
                     message: `Error message(${description}) from ${deviceId}`,
                   })
                     .then((data) => {
-                      // console.log(data);
                       resolve(data);
                     })
                     .catch((err) => {
-                      // console.log(err);
                       reject(err);
                     });
 
@@ -115,11 +117,9 @@ async function iotHubMsgProc(params) {
                     emailBody: `<h3>${number} - ${description}</h3>`,
                   })
                     .then((data) => {
-                      // console.log(data.data);
                       resolve(data);
                     })
                     .catch((err) => {
-                      // console.log(err);
                       reject(err);
                     });
 
