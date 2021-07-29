@@ -72,7 +72,8 @@ function sendMailOverHTTP(params) {
 
 async function iotHubMsgProc(params) {
   const log = params.message.log;
-  
+  messageService.createA(params)
+
   if (log === "error") {
     const id = params.id;
     const deviceId = params.message.ID;
@@ -131,7 +132,6 @@ async function iotHubMsgProc(params) {
 
         Promise.all(promises).then((res) => {
           console.log("----- Promise.all->", "OK");
-          return messageService.createA(params);
         });
       }
     });
