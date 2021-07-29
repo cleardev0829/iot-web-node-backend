@@ -25,39 +25,16 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-function sendSMSOverHTTP(req, res) {
-  console.log(req.body);
-  cors(req, res, () => {
-    const client = require("twilio")(accountSid, authToken);
-    const phone = req.body.phone;
-    const name = req.body.name;
-    const message = req.body.message;
-
-    const body = `
-      Hi ${name}.
-      Occured some error from your device. 
-      The error is like follow.
-      ${message}
-      `;
-
-    return client.messages
-      .create({
-        body: body,
-        from: "+79600315449",
-        to: phone,
-      })
-      .then((message) => {
-        return res.send({ data: message, phone: phone });
-      })
-      .catch((error) => {
-        return res.send({ error: error, phone: phone });
-      });
-  });
+function sendSMSOverHTTP(req, res, next) {
+  mailService
+    .sendSMSOverHTTP(req.body)
+    .then((data) => res.json(data))
+    .catch((err) => next(err));
 }
 
 function sendMailOverHTTP(req, res, next) {
   mailService
     .sendMailOverHTTP(req.body)
-    .then((response) => res.json(response))
-    .catch((err) => console.log('err', err));
+    .then((data) => res.json(data))
+    .catch((err) => next(err));
 }
