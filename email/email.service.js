@@ -80,7 +80,7 @@ async function iotHubMsgProc(params) {
     const state = params.message.state ? params.message.state : 0;
     const errid = params.message.errid ? params.message.errid : 0;
     const number = log === "info" ? state : log === "error" ? errid : 0;
-    const description = constant.descriptions[log][number];
+    let description = constant.descriptions[log][number];
 
     productService.getByUID({ uid: deviceId }).then(async (data) => {
       if (data && data.categories) {
