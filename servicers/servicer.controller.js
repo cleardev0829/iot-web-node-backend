@@ -1,6 +1,6 @@
 ﻿const express = require('express');
 const router = express.Router();
-const customerService = require('./customer.service');
+const servicerService = require('./servicer.service');
 
 // routes
 router.post('/register', register);
@@ -14,43 +14,43 @@ router.post('/deleteByIds', _deleteByIds);
 module.exports = router;
 
 function register(req, res, next) { 
-    customerService.create(req.body)
+    servicerService.create(req.body)
         .then(() => res.json({}))
         .catch(err => next(err));
 }
 
 function getAll(req, res, next) {
-    customerService.getAll()
-        .then(customers => res.json(customers))
+    servicerService.getAll()
+        .then(servicers => res.json(servicers))
         .catch(err => next(err));
 }
 
 function getCurrent(req, res, next) {
-    customerService.getById(req.customer.sub)
-        .then(customer => customer ? res.json(customer) : res.sendStatus(404))
+    servicerService.getById(req.servicer.sub)
+        .then(servicer => servicer ? res.json(servicer) : res.sendStatus(404))
         .catch(err => next(err));
 }
 
 function getById(req, res, next) { 
-    customerService.getById(req.params.id)
-        .then(customer => customer ? res.json(customer) : res.sendStatus(404))
+    servicerService.getById(req.params.id)
+        .then(servicer => servicer ? res.json(servicer) : res.sendStatus(404))
         .catch(err => next(err));
 }
 
 function update(req, res, next) {
-    customerService.update(req.params.id, req.body)
+    servicerService.update(req.params.id, req.body)
         .then(() => res.json({}))
         .catch(err => next(err));
 }
 
 function _delete(req, res, next) {
-    customerService.delete(req.params.id)
+    servicerService.delete(req.params.id)
         .then(() => res.json({}))
         .catch(err => next(err));
 }
 
 function _deleteByIds(req, res, next) {
-    customerService.deleteByIds(req.body.ids)
+    servicerService.deleteByIds(req.body.ids)
         .then(() => res.json({}))
         .catch(err => next(err));
 }

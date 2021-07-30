@@ -20,7 +20,7 @@ app.use(cors());
 // app.use(jwt());
 // api routes
 app.use('/users', require('./users/users.controller'));
-app.use('/customers', require('./customers/customers.controller'));
+app.use('/servicers', require('./servicers/servicer.controller'));
 app.use('/products', require('./products/products.controller'));
 app.use('/messages', require('./messages/messages.controller'));
 app.use('/email', require('./email/email.controller')); 

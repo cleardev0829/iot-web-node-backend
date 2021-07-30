@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema({
     uid: { type: String, unique: true, required: true },
-    userId: { type: String, required: true },
+    customerId: { type: String, required: true },
     displayName: { type: String },
     email: { type: String, required: true },
     emailValidation: { type: Boolean, requird: true },
@@ -21,4 +21,4 @@ schema.set('toJSON', {
     }
 });
 
-module.exports = mongoose.model('customer', schema);
+module.exports = mongoose.model('servicer', schema);
