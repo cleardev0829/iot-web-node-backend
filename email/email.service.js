@@ -20,12 +20,12 @@ const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
   secure: true,
-  service: 'Gmail',
   auth: {
     // user: 'rocket.iot.at@gmail.com',
     // pass: 'InformYourCostumer',
-    user: 'brzden32@gmail.com',
-    pass: 'Welcome!0428**',
+    user: "anatolloflint@gmail.com",
+    pass: "cartographerclarine?",
+    
   },
 });
 
