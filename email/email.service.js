@@ -21,10 +21,10 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: 'rocket.iot.at@gmail.com',
-    pass: 'InformYourCostumer',
-    // user: "anatolloflint@gmail.com",
-    // pass: "cartographerclarine?",
+    // user: 'rocket.iot.at@gmail.com',
+    // pass: 'InformYourCostumer',
+    user: "anatolloflint@gmail.com",
+    pass: "cartographerclarine?",
   },
 });
 
