@@ -5,7 +5,6 @@ const constant = require("../utils/constant");
 const messageService = require("../messages/message.service");
 const productService = require("../products/product.service");
 const userService = require("../users/user.service");
-const Pricing = require("twilio/lib/rest/Pricing");
 
 const accountSid = "AC0b6ed65b3b28b81e5816eeb39c2e30cd";
 const authToken = "59c24ba047f4732df8791cd093f3901b";
@@ -22,10 +21,10 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    // user: 'rocket.iot.at@gmail.com',
-    // pass: 'InformYourCostumer'
-    user: "anatolloflint@gmail.com",
-    pass: "cartographerclarine?",
+    user: 'rocket.iot.at@gmail.com',
+    pass: 'InformYourCostumer',
+    // user: "anatolloflint@gmail.com",
+    // pass: "cartographerclarine?",
   },
 });
 
