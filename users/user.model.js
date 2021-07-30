@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
     uuid: { type: String, unique: true, required: true },
     password: { type: String },
-    displayName: { type: String, unique: true },
+    displayName: { type: String },
     email: { type: String, unique: true, require: true },
-    phone: { type: String, unique: true },
-    role: { type: String, require: true },
-    active: { type: Boolean, require: true },
+    phone: { type: String },
+    role: { type: String },
+    active: { type: Boolean },
     createdDate: { type: Date, default: Date.now }
 });
 
