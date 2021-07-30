@@ -23,8 +23,10 @@ const transporter = nodemailer.createTransport({
   auth: {
     // user: 'rocket.iot.at@gmail.com',
     // pass: 'InformYourCostumer',
-    user: "anatolloflint@gmail.com",
-    pass: "cartographerclarine?",
+    // user: "anatolloflint@gmail.com",
+    // pass: "cartographerclarine?",
+    user: "vanniekohner94@gmail.com",
+    pass: "tokaygeckokirsteni97",
   },
 });
 
