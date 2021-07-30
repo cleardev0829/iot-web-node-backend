@@ -16,19 +16,25 @@ module.exports = {
   iotHubMsgProc,
 };
 
-const transporter = nodemailer.createTransport({
+var transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
   secure: true,
   auth: {
-    // user: 'rocket.iot.at@gmail.com',
-    // pass: 'InformYourCostumer',
-    // user: "anatolloflint@gmail.com",
-    // pass: "cartographerclarine?",
-    user: "vanniekohner94@gmail.com",
-    pass: "tokaygeckokirsteni97",
+    user: "networkbackofficeagent@gmail.com",
+    pass: "0110jan21$",
   },
 });
+
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 465,
+//   secure: true,
+//   auth: {
+//     user: 'rocket.iot.at@gmail.com',
+//     pass: 'InformYourCostumer',
+//   },
+// });
 
 function sendSMSOverHTTP(params) {
   const client = require("twilio")(accountSid, authToken);
