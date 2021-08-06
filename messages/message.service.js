@@ -1,4 +1,4 @@
-﻿const db = require("helpers/db");
+﻿const db = require("abc/db");
 const Message = db.Message;
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
