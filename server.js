@@ -4,9 +4,9 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const jwt = require('./_helpers/jwt');
+const jwt = require('_helpers/jwt');
 // const constant = require('./utils/constant');
-const errorHandler = require('./_helpers/error-handler');
+const errorHandler = require('_helpers/error-handler');
 // const messageService = require('./messages/message.service');
 // const productService = require('./products/product.service');
 // const userService = require('./users/user.service');
@@ -26,10 +26,10 @@ app.use('/messages', require('./messages/messages.controller'));
 app.use('/email', require('./email/email.controller')); 
 
 // global error handler
-app.use(errorHandler);
+// app.use(errorHandler);
 
 // start server
-const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 4000;
+const port = process.env.PORT
 const server = app.listen(port, function () {
     console.log('Server listening on port ' + port);
 });
