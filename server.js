@@ -4,7 +4,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const jwt = require('helpers/jwt');
 // const constant = require('./utils/constant');
 const errorHandler = require('helpers/error-handler');
 // const messageService = require('./messages/message.service');
