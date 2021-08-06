@@ -1,4 +1,4 @@
-﻿const db = require('abc/db');
+﻿const db = require('../abc/db');
 const Servicer = db.servicer;
 
 module.exports = {

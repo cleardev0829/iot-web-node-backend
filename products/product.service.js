@@ -1,4 +1,4 @@
-﻿const db = require('abc/db');
+﻿const db = require('../abc/db');
 const Product = db.Product;
 
 module.exports = {
