@@ -7,7 +7,7 @@ const productService = require("../products/product.service");
 const userService = require("../users/user.service");
 
 const accountSid = "AC0b6ed65b3b28b81e5816eeb39c2e30cd";
-const authToken = "59c24ba047f4732df8791cd093f3901b";
+const authToken = "c998d5eeea33db16901aa939c8eb62ef";
 
 module.exports = {
   sendSMSOverHTTP,
@@ -16,13 +16,23 @@ module.exports = {
   iotHubMsgProc,
 };
 
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 465,
+//   secure: true,
+//   auth: {
+//     user: 'rocket.iot.at@gmail.com',
+//     pass: 'InformYourCostumer'
+//   },
+// });
+
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+  host: "smtp.world4you.com",
   port: 465,
   secure: true,
   auth: {
-    user: 'rocket.iot.at@gmail.com',
-    pass: 'InformYourCostumer'
+    user: 'iot@rocket-at.com',
+    pass: 'zSl3#QM9Zf'
   },
 });
 
@@ -40,7 +50,7 @@ function sendSMSOverHTTP(params) {
 
   return client.messages.create({
     body: body,
-    from: "+436505050180",
+    from: "+436703082251", //Austria
     to: phone,
   });
 }
@@ -51,7 +61,7 @@ function sendSMSOverHTTPA(params) {
     {
       Phone: params.phone,
       Body: params.message,
-      From: "+13462331831",
+      From: "+13462331831", // US
     }
   );
 }
