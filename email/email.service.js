@@ -13,7 +13,7 @@ module.exports = {
   sendSMSOverHTTP,
   sendSMSOverHTTPA,
   sendMailOverHTTP,
-  sendMailOverHTTPByMailtrap,
+  sendMailOverHTTPA,
   iotHubMsgProc,
 };
 
@@ -27,24 +27,37 @@ const smtptransporter = nodemailer.createTransport({
   },
 });
 
-const smtpWorld4youTransporter = nodemailer.createTransport({
+const smtptransporterA = nodemailer.createTransport({
   host: "smtp.world4you.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: 'iot@rocket-at.com',
-    pass: 'zSl3#QM9Zf'
-  },
-});
-
-const smtpMailtrapTransporter = nodemailer.createTransport({
-  host: "smtp.rocket-at.com",
+  // host: "smtp.office365.com",
   port: 465,
   auth: {
       user: 'iot@rocket-at.com',
       pass: 'zSl3#QM9Zf'
   }
 })
+
+function sendMailOverHTTP(params) {
+  const mailOptions = {
+    from: `contact@rockets.co`,
+    to: params.email,
+    subject: params.subject,
+    html: params.emailBody,
+  };
+
+  return smtptransporter.sendMail(mailOptions);
+}
+
+function sendMailOverHTTPA(params) {
+  const mailOptions = {
+    from: `contact@rockets.co`,
+    to: params.email,
+    subject: params.subject,
+    html: params.emailBody,
+  };
+
+  return smtptransporterA.sendMail(mailOptions);
+}
 
 function sendSMSOverHTTP(params) {
   const client = require("twilio")(accountSid, authToken);
@@ -74,28 +87,6 @@ function sendSMSOverHTTPA(params) {
       From: "+13462331831", // US
     }
   );
-}
-
-function sendMailOverHTTP(params) {
-  const mailOptions = {
-    from: `contact@rockets.co`,
-    to: params.email,
-    subject: params.subject,
-    html: params.emailBody,
-  };
-
-  return smtptransporter.sendMail(mailOptions);
-}
-
-function sendMailOverHTTPByMailtrap(params) {
-  const mailOptions = {
-    from: `contact@rockets.co`,
-    to: params.email,
-    subject: params.subject,
-    html: params.emailBody,
-  };
-
-  return smtpMailtrapTransporter.sendMail(mailOptions);
 }
 
 async function iotHubMsgProc(params) {
