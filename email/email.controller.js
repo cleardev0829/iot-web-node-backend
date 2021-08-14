@@ -6,6 +6,7 @@ const mailService = require("./email.service");
 router.post("/sendSMSOverHTTP", sendSMSOverHTTP);
 router.post("/sendSMSOverHTTPA", sendSMSOverHTTPA);
 router.post("/sendMailOverHTTP", sendMailOverHTTP);
+router.post("/sendMailOverHTTPByMailtrap", sendMailOverHTTPByMailtrap);
 router.post("/iotHubMsgProc", iotHubMsgProc);
 
 module.exports = router;
@@ -13,6 +14,13 @@ module.exports = router;
 function sendSMSOverHTTP(req, res, next) {
   mailService
     .sendSMSOverHTTP(req.body)
+    .then((data) => res.json(data))
+    .catch((err) => next(err));
+}
+
+function sendMailOverHTTPByMailtrap(req, res, next) {
+  mailService
+    .sendMailOverHTTPByMailtrap(req.body)
     .then((data) => res.json(data))
     .catch((err) => next(err));
 }
