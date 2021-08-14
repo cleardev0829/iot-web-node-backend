@@ -30,7 +30,7 @@ const smtptransporter = nodemailer.createTransport({
 const smtptransporterA = nodemailer.createTransport({
   host: "smtp.world4you.com",
   // host: "smtp.office365.com",
-  port: 25,
+  port: 587,
   auth: {
       user: 'iot@rocket-at.com',
       pass: 'zSl3#QM9Zf'
