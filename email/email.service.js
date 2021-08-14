@@ -38,7 +38,7 @@ const smtpWorld4youTransporter = nodemailer.createTransport({
 });
 
 const smtpMailtrapTransporter = nodemailer.createTransport({
-  host: 'smtp.world4you.com',
+  host: "smtp.office365.com",
   port: 2525,
   auth: {
       user: 'iot@rocket-at.com',
