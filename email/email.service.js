@@ -19,7 +19,7 @@ module.exports = {
 
 const smtptransporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
+  port: 465,
   secure: true,
   auth: {
     user: 'rocket.iot.at@gmail.com',
@@ -31,6 +31,11 @@ const smtptransporterA = nodemailer.createTransport({
   host: "smtp.world4you.com",
   // host: "smtp.office365.com",
   port: 587,
+  tls: {
+    secure: false,
+    ignoreTLS: true,
+    rejectUnauthorized: false
+  },
   auth: {
       user: 'iot@rocket-at.com',
       pass: 'zSl3#QM9Zf'
