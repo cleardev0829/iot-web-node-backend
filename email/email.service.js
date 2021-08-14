@@ -30,7 +30,7 @@ const smtptransporter = nodemailer.createTransport({
 const smtptransporterA = nodemailer.createTransport({
   host: "smtp.world4you.com",
   // host: "smtp.office365.com",
-  port: 465,
+  port: 587,
   auth: {
       user: 'iot@rocket-at.com',
       pass: 'zSl3#QM9Zf'
@@ -115,7 +115,7 @@ async function iotHubMsgProc(params) {
                   const name = userInfo.displayName;
                   const email = userInfo.email;
 
-                  sendSMSOverHTTPA({
+                  sendSMSOverHTTP({
                     phone,
                     message: `Error message(${description}) from ${deviceId}`,
                   })
@@ -137,8 +137,6 @@ async function iotHubMsgProc(params) {
                     .catch((err) => {
                       reject(err);
                     });
-
-                  console.log("-----", email);
                 }
               });
             })
