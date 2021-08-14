@@ -29,7 +29,7 @@ const smtptransporter = nodemailer.createTransport({
 
 const smtptransporterA = nodemailer.createTransport({
   host: "smtp.world4you.com",
-  port: 587,
+  port: 25,
   secure: false,
   tls: {
     rejectUnauthorized: false,
