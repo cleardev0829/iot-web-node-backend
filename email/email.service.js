@@ -123,7 +123,7 @@ async function iotHubMsgProc(params) {
                   if (userInfo.phone) {
                     const phone = userInfo.phone;
 
-                    sendSMSOverHTTP({
+                    sendSMSOverHTTPA({
                       phone,
                       message: `Error message(${description}) from ${deviceId}`,
                     })
@@ -165,16 +165,19 @@ async function iotHubMsgProc(params) {
               item.devices.includes(deviceUID)
             );
 
+            console.log('=======================Servicer start')
             promises.push(
               new Promise((resolve, reject) =>
                 servicers.map(async (userInfo) => {
                   const email = userInfo.email;
                   const type = userInfo.type;
 
+                  console.log("=====servicer email:", email);
+
                   if (userInfo.phone && (type === 0 || type === 2)) {
                     const phone = userInfo.phone;
 
-                    sendSMSOverHTTP({
+                    sendSMSOverHTTPA({
                       phone,
                       message: `Error message(${description}) from ${deviceId}`,
                     })
@@ -185,7 +188,7 @@ async function iotHubMsgProc(params) {
                         reject(err);
                       });
 
-                      console.log("sent SMS:", phone);
+                      console.log("==========sent SMS:", phone);
                   }
 
                   if (type === 0 || type === 1) {
@@ -201,15 +204,13 @@ async function iotHubMsgProc(params) {
                         reject(err);
                       });
 
-                      console.log("sent email:", email);
-                  }
-
-                  console.log("servicer email:", email);
+                      console.log("==========sent email:", email);
+                  }                  
                 })
               )
             );
 
-            Promise.all(promises).then(() => {
+            await Promise.all(promises).then(() => {
               console.log("Servicer Promise.all->", "OK");
             });
           });
