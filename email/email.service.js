@@ -123,7 +123,7 @@ async function iotHubMsgProc(params) {
                   if (userInfo.phone) {
                     const phone = userInfo.phone;
 
-                    sendSMSOverHTTPA({
+                    sendSMSOverHTTP({
                       phone,
                       message: `Error message(${description}) from ${deviceId}`,
                     })
@@ -177,7 +177,7 @@ async function iotHubMsgProc(params) {
                   if (userInfo.phone && (type === 0 || type === 2)) {
                     const phone = userInfo.phone;
 
-                    sendSMSOverHTTPA({
+                    sendSMSOverHTTP({
                       phone,
                       message: `Error message(${description}) from ${deviceId}`,
                     })
