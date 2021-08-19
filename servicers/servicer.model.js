@@ -9,6 +9,7 @@ const schema = new Schema({
     emailValidation: { type: Boolean, requird: true },
     phone: { type: String },
     role: { type: String },
+    type: { type: Number },
     devices: { type: Array },
     createdDate: { type: Date, default: Date.now }
 });

@@ -1,10 +1,12 @@
 ﻿const axios = require("axios");
 const nodemailer = require("nodemailer");
 const constant = require("../utils/constant");
+const _ = require("lodash");
 
 const messageService = require("../messages/message.service");
 const productService = require("../products/product.service");
 const userService = require("../users/user.service");
+const servicerService = require("../servicers/servicer.service");
 
 const accountSid = "AC0b6ed65b3b28b81e5816eeb39c2e30cd";
 const authToken = "c998d5eeea33db16901aa939c8eb62ef";
@@ -32,6 +34,7 @@ const smtptransporterA = nodemailer.createTransport({
   // port: 25,
   port: 587,
   secure: false,
+  secureConnection: false,
   tls: {
     rejectUnauthorized: false,
   },
@@ -98,7 +101,6 @@ async function iotHubMsgProc(params) {
   messageService.createA(params);
 
   if (log === "error") {
-    const id = params.id;
     const deviceId = params.message.ID;
     const state = params.message.state ? params.message.state : 0;
     const errid = params.message.errid ? params.message.errid : 0;
@@ -107,6 +109,7 @@ async function iotHubMsgProc(params) {
 
     productService.getByUID({ uid: deviceId }).then(async (data) => {
       if (data && data.categories) {
+        const device = data;
         const users = data.categories;
         let promises = [];
 
@@ -114,21 +117,23 @@ async function iotHubMsgProc(params) {
           new Promise((resolve, reject) =>
             users.map(async (userId) => {
               await userService.getById(userId).then(async (userInfo) => {
-                if (userInfo && userInfo.phone) {
-                  const phone = userInfo.phone;
-                  const name = userInfo.displayName;
+                if (userInfo) {
                   const email = userInfo.email;
 
-                  sendSMSOverHTTP({
-                    phone,
-                    message: `Error message(${description}) from ${deviceId}`,
-                  })
-                    .then((data) => {
-                      resolve(data);
+                  if (userInfo.phone) {
+                    const phone = userInfo.phone;
+
+                    sendSMSOverHTTP({
+                      phone,
+                      message: `Error message(${description}) from ${deviceId}`,
                     })
-                    .catch((err) => {
-                      reject(err);
-                    });
+                      .then((data) => {
+                        resolve(data);
+                      })
+                      .catch((err) => {
+                        reject(err);
+                      });
+                  }
 
                   sendMailOverHTTP({
                     email: email,
@@ -141,14 +146,73 @@ async function iotHubMsgProc(params) {
                     .catch((err) => {
                       reject(err);
                     });
+
+                  console.log("-----", email);
                 }
               });
             })
           )
         );
 
-        Promise.all(promises).then((res) => {
+        Promise.all(promises).then(() => {
           console.log("----- Promise.all->", "OK");
+
+          promises = [];
+          servicerService.getAll().then(async (data) => {
+            const deviceUID = device._id;
+
+            const servicers = _.filter(data, (item) =>
+              item.devices.includes(deviceUID)
+            );
+
+            promises.push(
+              new Promise((resolve, reject) =>
+                servicers.map(async (userInfo) => {
+                  const email = userInfo.email;
+                  const type = userInfo.type;
+
+                  if (userInfo.phone && (type === 0 || type === 2)) {
+                    const phone = userInfo.phone;
+
+                    sendSMSOverHTTP({
+                      phone,
+                      message: `Error message(${description}) from ${deviceId}`,
+                    })
+                      .then((data) => {
+                        resolve(data);
+                      })
+                      .catch((err) => {
+                        reject(err);
+                      });
+
+                      console.log("sent SMS:", phone);
+                  }
+
+                  if (type === 0 || type === 1) {
+                    sendMailOverHTTP({
+                      email: email,
+                      subject: `Error message from ${deviceId}`,
+                      emailBody: `<h3>${number} - ${description}</h3>`,
+                    })
+                      .then((data) => {
+                        resolve(data);
+                      })
+                      .catch((err) => {
+                        reject(err);
+                      });
+
+                      console.log("sent email:", email);
+                  }
+
+                  console.log("servicer email:", email);
+                })
+              )
+            );
+
+            Promise.all(promises).then(() => {
+              console.log("Servicer Promise.all->", "OK");
+            });
+          });
         });
       }
     });
