@@ -123,7 +123,7 @@ async function iotHubMsgProc(params) {
                   if (userInfo.phone) {
                     const phone = userInfo.phone;
 
-                    sendSMSOverHTTP({
+                    sendSMSOverHTTPA({
                       phone,
                       message: `Error message(${description}) from ${deviceId}`,
                     })
@@ -165,52 +165,56 @@ async function iotHubMsgProc(params) {
               item.devices.includes(deviceUID)
             );
 
-            console.log('=======================Servicer start')
+            console.log("=======================Servicer start");
             promises.push(
               new Promise((resolve, reject) =>
-                servicers.map(async (userInfo) => {
-                  const email = userInfo.email;
-                  const type = userInfo.type;
+                servicers.map(async (servicerInfo) => {
+                  await servicerService
+                    .getById(servicerInfo.id)
+                    .then(async (userInfo) => {
+                      if (userInfo) {
+                        const email = userInfo.email;
+                        const type = userInfo.type;
 
-                  console.log("=====servicer email:", email);
+                        if (userInfo.phone && (type === 0 || type === 2)) { 
+                          const phone = userInfo.phone;
 
-                  if (userInfo.phone && (type === 0 || type === 2)) {
-                    const phone = userInfo.phone;
+                          sendSMSOverHTTPA({
+                            phone,
+                            message: `Error message(${description}) from ${deviceId}`,
+                          })
+                            .then((data) => {
+                              resolve(data);
+                            })
+                            .catch((err) => {
+                              reject(err);
+                            });
 
-                    sendSMSOverHTTP({
-                      phone,
-                      message: `Error message(${description}) from ${deviceId}`,
-                    })
-                      .then((data) => {
-                        resolve(data);
-                      })
-                      .catch((err) => {
-                        reject(err);
-                      });
+                          console.log("==========sent SMS:", phone);
+                        }
 
-                      console.log("==========sent SMS:", phone);
-                  }
+                        if (type === 0 || type === 1) {
+                          sendMailOverHTTP({
+                            email: email,
+                            subject: `Error message from ${deviceId}`,
+                            emailBody: `<h3>${number} - ${description}</h3>`,
+                          })
+                            .then((data) => {
+                              resolve(data);
+                            })
+                            .catch((err) => {
+                              reject(err);
+                            });
 
-                  if (type === 0 || type === 1) {
-                    sendMailOverHTTP({
-                      email: email,
-                      subject: `Error message from ${deviceId}`,
-                      emailBody: `<h3>${number} - ${description}</h3>`,
-                    })
-                      .then((data) => {
-                        resolve(data);
-                      })
-                      .catch((err) => {
-                        reject(err);
-                      });
-
-                      console.log("==========sent email:", email);
-                  }                  
+                          console.log("==========sent email:", email);
+                        }
+                      }
+                    });
                 })
               )
             );
 
-            await Promise.all(promises).then(() => {
+            Promise.all(promises).then(() => {
               console.log("Servicer Promise.all->", "OK");
             });
           });
