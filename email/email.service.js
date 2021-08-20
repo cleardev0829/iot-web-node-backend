@@ -131,7 +131,7 @@ async function iotHubMsgProc(params) {
                         resolve(data);
                       })
                       .catch((err) => {
-                        reject(err);
+                        resolve(err);
                       });
                   }
 
@@ -144,7 +144,7 @@ async function iotHubMsgProc(params) {
                       resolve(data);
                     })
                     .catch((err) => {
-                      reject(err);
+                      resolve(err);
                     });
 
                   console.log("-----", email);
@@ -187,7 +187,7 @@ async function iotHubMsgProc(params) {
                               resolve(data);
                             })
                             .catch((err) => {
-                              reject(err);
+                              resolve(err);
                             });
 
                           console.log("==========sent SMS:", phone);
@@ -203,7 +203,7 @@ async function iotHubMsgProc(params) {
                               resolve(data);
                             })
                             .catch((err) => {
-                              reject(err);
+                              resolve(err);
                             });
 
                           console.log("==========sent email:", email);
