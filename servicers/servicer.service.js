@@ -25,7 +25,7 @@ async function create(servicerParam) {
     }  
   
     if (await Servicer.findOne({ email: servicerParam.email })) {
-        throw 'Email "' + servicerParam.name + '" is already taken';
+        throw 'Email "' + servicerParam.email + '" is already taken';
     }    
 
     const servicer = new Servicer(servicerParam);

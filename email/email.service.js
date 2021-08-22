@@ -155,7 +155,7 @@ async function iotHubMsgProc(params) {
         );
 
         Promise.all(promises).then(() => {
-          console.log("----- Promise.all->", "OK");
+          console.log("-----Customer Promise.all->", "OK");
 
           promises = [];
           servicerService.getAll().then(async (data) => {
@@ -165,7 +165,6 @@ async function iotHubMsgProc(params) {
               item.devices.includes(deviceUID)
             );
 
-            console.log("=======================Servicer start");
             promises.push(
               new Promise((resolve, reject) =>
                 servicers.map(async (servicerInfo) => {
@@ -190,7 +189,6 @@ async function iotHubMsgProc(params) {
                               resolve(err);
                             });
 
-                          console.log("==========sent SMS:", phone);
                         }
 
                         if (type === 0 || type === 1) {
@@ -205,8 +203,6 @@ async function iotHubMsgProc(params) {
                             .catch((err) => {
                               resolve(err);
                             });
-
-                          console.log("==========sent email:", email);
                         }
                       }
                     });
