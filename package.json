@@ -22,6 +22,7 @@
         "jsonwebtoken": "^8.5.1",
         "mongodb": "^3.5.9",
         "mongoose": "^5.9.21",
+        "node-notifier": "^10.0.0",
         "nodemailer": "^6.6.0",
         "redux-persist": "^6.0.0",
         "rootpath": "^0.1.2",
@@ -29,7 +30,7 @@
         "twilio": "^3.63.0"
     },
     "devDependencies": {
-        "nodemon": "^2.0.4",
-        "dotenv": "^8.2.0"
+        "dotenv": "^8.2.0",
+        "nodemon": "^2.0.4"
     }
 }

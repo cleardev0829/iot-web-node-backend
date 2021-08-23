@@ -3,6 +3,8 @@ const router = express.Router();
 const mailService = require("./email.service");
 
 // routes
+router.post("/sendNativeNotification", sendNativeNotification);
+router.post("/sendToasterNotification", sendToasterNotification);
 router.post("/sendSMSOverHTTP", sendSMSOverHTTP);
 router.post("/sendSMSOverHTTPA", sendSMSOverHTTPA);
 router.post("/sendMailOverHTTP", sendMailOverHTTP);
@@ -10,6 +12,20 @@ router.post("/sendMailOverHTTPA", sendMailOverHTTPA);
 router.post("/iotHubMsgProc", iotHubMsgProc);
 
 module.exports = router;
+
+function sendNativeNotification(req, res, next) {
+  mailService
+    .sendNativeNotification(req.body)
+    .then((data) => res.json(data))
+    .catch((err) => next(err));
+}
+
+function sendToasterNotification(req, res, next) {
+  mailService
+    .sendToasterNotification(req.body)
+    .then((data) => res.json(data))
+    .catch((err) => next(err));
+}
 
 function sendSMSOverHTTP(req, res, next) {
   mailService

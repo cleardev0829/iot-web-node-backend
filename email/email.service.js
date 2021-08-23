@@ -1,7 +1,12 @@
 ﻿const axios = require("axios");
 const nodemailer = require("nodemailer");
+const notifier = require("node-notifier");
+const WindowsToaster = require("node-notifier").WindowsToaster;
+// Or
+// const WindowsToaster = require('node-notifier/notifiers/toaster');
 const constant = require("../utils/constant");
 const _ = require("lodash");
+const path = require("path");
 
 const messageService = require("../messages/message.service");
 const productService = require("../products/product.service");
@@ -12,6 +17,8 @@ const accountSid = "AC0b6ed65b3b28b81e5816eeb39c2e30cd";
 const authToken = "c998d5eeea33db16901aa939c8eb62ef";
 
 module.exports = {
+  sendNativeNotification,
+  sendToasterNotification,
   sendSMSOverHTTP,
   sendSMSOverHTTPA,
   sendMailOverHTTP,
@@ -43,6 +50,61 @@ const smtptransporterA = nodemailer.createTransport({
     pass: "zSl3#QM9Zf",
   },
 });
+
+async function sendNativeNotification(params) {
+  notifier.notify(
+    {
+      title: params.title,
+      message: params.message,
+      appID: 'test appID',
+      icon: path.join(__dirname, "icon.jpg"),
+      sound: "SMS",
+      type: 'info',
+      time: 5000,
+      wait: true,
+    },
+    function (error, response, metadata) {
+      console.log(
+        "error:",
+        error,
+        ", ",
+        "response:",
+        response,
+        ", ",
+        "metadata:",
+        metadata
+      );
+    }
+  );
+}
+
+async function sendToasterNotification(params) {
+  let windowsToasterNotifier = new WindowsToaster({
+    withFallback: true,
+  });
+
+  return await windowsToasterNotifier.notify(
+    {
+      title: "Windows Toaster Notification",
+      message: params.message,
+      icon: path.join(__dirname, "icon.jpg"),
+      type: 'warning',
+      sound: "SMS",
+    },
+    function (error, response, metadata) {
+      console.log(
+        "error:",
+        error,
+        ", ",
+        "response:",
+        response,
+        ", ",
+        "metadata:",
+        metadata
+      );
+    }
+  );
+}
 
 function sendMailOverHTTP(params) {
   const mailOptions = {
@@ -175,7 +237,7 @@ async function iotHubMsgProc(params) {
                         const email = userInfo.email;
                         const type = userInfo.type;
 
-                        if (userInfo.phone && (type === 0 || type === 2)) { 
+                        if (userInfo.phone && (type === 0 || type === 2)) {
                           const phone = userInfo.phone;
 
                           sendSMSOverHTTP({
@@ -188,7 +250,6 @@ async function iotHubMsgProc(params) {
                             .catch((err) => {
                               resolve(err);
                             });
-
                         }
 
                         if (type === 0 || type === 1) {
