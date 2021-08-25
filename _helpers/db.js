@@ -8,5 +8,5 @@ module.exports = {
     User: require('../users/user.model'),
     servicer: require('../servicers/servicer.model'),
     Product: require('../products/product.model'),
-    Message: require('../messages/message.model')
+    Message: require('../messages/message.model'),
 };

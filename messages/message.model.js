@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-    // deviceId: { type:  mongoose.Schema.Types.ObjectId, ref: 'Product' },
     index: { type: String, required: true },
     device: {
         id: { type: String, required: true },
