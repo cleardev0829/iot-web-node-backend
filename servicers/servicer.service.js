@@ -1,5 +1,5 @@
 ﻿const db = require('../_helpers/db');
-const Servicer = db.servicer;
+const Servicer = db.Servicer;
 
 module.exports = {
     getAll,

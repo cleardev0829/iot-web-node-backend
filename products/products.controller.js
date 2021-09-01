@@ -32,13 +32,13 @@ function getCurrent(req, res, next) {
         .catch(err => next(err));
 }
 
-function getById(req, res, next) { console.log(req)
+function getById(req, res, next) { 
     productService.getById(req.params.id)
         .then(product => product ? res.json(product) : res.sendStatus(404))
         .catch(err => next(err));
 }
 
-function getByUID(req, res, next) {  console.log(req)
+function getByUID(req, res, next) {  
     productService.getByUID(req.query)
         .then(device => device ? res.json(device) : res.sendStatus(404))
         .catch(err => next(err));
