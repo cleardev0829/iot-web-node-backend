@@ -56,7 +56,7 @@ async function getByPagenation(messageParam) {
     {
       ...con,
     },
-    { device: 1, message: 1, timestamp: 1, index: 1, count: `${count.toString()}` }
+    { device: 1, message: 1, timestamp: 1, index: 1, count1: `${count.toString()}` }
   )
     .sort({ _id: -1 })
     .limit(parseInt(messageParam.limit))
