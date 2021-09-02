@@ -52,13 +52,15 @@ async function getByPagenation(messageParam) {
 
   const count = await Message.find({ ...con }).countDocuments();
 
+  // Message.createIndex({timestamp: 1});
+
   return await Message.find(
     {
       ...con,
     },
     { device: 1, message: 1, timestamp: 1, index: 1, count: `${count}` }
   )
-    .sort({ timestamp: -1 })
+    .sort({ _id: -1 })
     .limit(parseInt(messageParam.limit))
     .skip(parseInt(messageParam.skip));
 }
