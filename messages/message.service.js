@@ -7,7 +7,7 @@ module.exports = {
   getAll,
   getByDeviceId,
   getById,
-  getByLog,
+  getByPagenation,
   create,
   createA,
   update,
@@ -30,8 +30,37 @@ async function getByDeviceId(messageParam) {
   return Message.find({ "message.ID": messageParam.deviceId });
 }
 
-async function getByLog(messageParam) {
-  return Message.find({ "message.log": messageParam.log });
+async function getByPagenation(messageParam) {
+  let con = {
+    "message.ID": messageParam.deviceId,
+  };
+
+  if (messageParam.log) {
+    if (messageParam.log === "all") {
+      con = {
+        ...con,
+        "message.log": { $ne: "para" },
+        "message.log": { $ne: "stats" },
+      };
+    } else {
+      con = {
+        ...con,
+        "message.log": messageParam.log,
+      };
+    }
+  }
+
+  const count = await Message.find({ ...con }).count();
+
+  return await Message.find(
+    {
+      ...con,
+    },
+    { device: 1, message: 1, timestamp: 1, index: 1, count: `${count}` }
+  )
+    .sort({ "timestamp": -1 })
+    .limit(parseInt(messageParam.limit))
+    .skip(parseInt(messageParam.skip));
 }
 
 async function getById(id) {
@@ -69,5 +98,6 @@ async function update(id, messageParam) {
 }
 
 async function _delete(id) {
-  await Message.findByIdAndRemove(id);
+  if (id === "all") await Message.remove();
+  else await Message.findByIdAndRemove(id);
 }

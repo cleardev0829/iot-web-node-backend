@@ -11,7 +11,6 @@ router.get("/:id", getById);
 router.put("/:id", update);
 router.delete("/:id", _delete);
 router.post("/deleteByIds", _deleteByIds);
-router.post("/deleteAll", _deleteAll);
 
 module.exports = router;
 
@@ -71,9 +70,3 @@ function _deleteByIds(req, res, next) {
     .catch((err) => next(err));
 }
 
-function _deleteAll(req, res, next) {
-  fileService
-    .deleteAll()
-    .then(() => res.json({}))
-    .catch((err) => next(err));
-}

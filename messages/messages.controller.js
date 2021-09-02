@@ -7,7 +7,7 @@ router.post('/register', register);
 router.post('/registerA', registerA);
 router.get('/', getAll);
 router.get('/getByDeviceId', getByDeviceId);
-router.get('/getByLog', getByLog);
+router.get('/getByPagenation', getByPagenation);
 router.get('/current', getCurrent);
 router.get('/:id', getById);
 router.put('/:id', update);
@@ -39,8 +39,8 @@ function getByDeviceId(req, res, next) {
         .catch(err => next(err));
 }
 
-function getByLog(req, res, next) { 
-    messageService.getByLog(req.query)
+function getByPagenation(req, res, next) { console.log(req.query)
+    messageService.getByPagenation(req.query)
         .then(message => message ? res.json(message) : res.sendStatus(404))
         .catch(err => next(err));
 }

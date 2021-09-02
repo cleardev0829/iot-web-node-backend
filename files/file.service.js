@@ -9,7 +9,6 @@ module.exports = {
   update,
   delete: _delete,
   deleteByIds: deleteByIds,
-  deleteAll,
 };
 
 async function getAll() {
@@ -55,15 +54,12 @@ async function update(id, fileParam) {
 }
 
 async function _delete(id) {
-  await File.findByIdAndRemove(id);
+  if (id === "all") await File.remove();
+  else await File.findByIdAndRemove(id);
 }
 
 async function deleteByIds(ids) {
   ids.map(async (id) => {
     await File.findByIdAndRemove(id);
   });
-}
-
-async function deleteAll() {
-  await File.remove();
 }
