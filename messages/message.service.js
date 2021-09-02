@@ -40,7 +40,7 @@ async function getByPagenation(messageParam) {
       con = {
         ...con,
         "message.log": { $ne: "para" },
-        "message.log": { $ne: "stats" }
+        "message.log": { $ne: "stats" },
       };
     } else {
       con = {
@@ -58,7 +58,7 @@ async function getByPagenation(messageParam) {
     },
     { device: 1, message: 1, timestamp: 1, index: 1, count: `${count}` }
   )
-    // .sort({ "timestamp": -1 })
+    .sort({ timestamp: -1 })
     .limit(parseInt(messageParam.limit))
     .skip(parseInt(messageParam.skip));
 }
