@@ -56,11 +56,11 @@ async function getByPagenation(messageParam) {
         ...con,
       },
     },
-    { $addFields: { count: count } },
+    { $addFields: { count: count, id: { _id: 1 } } },
   ])
     .sort({ _id: -1 })
-    .limit(parseInt(messageParam.limit))
-    .skip(parseInt(messageParam.skip));
+    .skip(parseInt(messageParam.skip))
+    .limit(parseInt(messageParam.limit));    
 }
 
 async function getById(id) {
