@@ -50,7 +50,7 @@ async function getByPagenation(messageParam) {
     }
   }
 
-  const count = await Message.find({ ...con }).count();
+  const count = await Message.find({ ...con }).countDocuments();
 
   return await Message.find(
     {

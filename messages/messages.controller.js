@@ -39,7 +39,7 @@ function getByDeviceId(req, res, next) {
         .catch(err => next(err));
 }
 
-function getByPagenation(req, res, next) { console.log(req.query)
+function getByPagenation(req, res, next) { 
     messageService.getByPagenation(req.query)
         .then(message => message ? res.json(message) : res.sendStatus(404))
         .catch(err => next(err));
