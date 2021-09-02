@@ -31,33 +31,33 @@ async function getByDeviceId(messageParam) {
 }
 
 async function getByPagenation(messageParam) {
-  let con = {
-    "message.ID": messageParam.deviceId,
-  };
+  let con = {};
 
   if (messageParam.log) {
     if (messageParam.log === "all") {
       con = {
-        ...con,
-        "message.log": { $ne: "para" },
-        "message.log": { $ne: "stats" },
+        "message.ID": parseInt(messageParam.deviceId),
+        "message.log": { $in: ["error", "info", "alarm"] },
       };
     } else {
       con = {
-        ...con,
+        "message.ID": parseInt(messageParam.deviceId),
         "message.log": messageParam.log,
       };
     }
   }
+  console.log(con);
 
   const count = await Message.find({ ...con }).countDocuments();
 
-  return await Message.find(
+  return await Message.aggregate([
     {
-      ...con,
+      $match: {
+        ...con,
+      },
     },
-    { device: 1, message: 1, timestamp: 1, index: 1, count: 'sss' }
-  )
+    { $addFields: { count: count } },
+  ])
     .sort({ _id: -1 })
     .limit(parseInt(messageParam.limit))
     .skip(parseInt(messageParam.skip));
