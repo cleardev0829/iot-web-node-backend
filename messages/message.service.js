@@ -39,8 +39,8 @@ async function getByPagenation(messageParam) {
     if (messageParam.log === "all") {
       con = {
         ...con,
-        "message.log": { $ne: "para" },
-        "message.log": { $ne: "stats" },
+        // "message.log": { $ne: "para" },
+        // "message.log": { $ne: "stats" },
       };
     } else {
       con = {
