@@ -8,6 +8,7 @@ module.exports = {
   getByDeviceId,
   getById,
   getByPagenation,
+  getLastErrMsgs,
   create,
   createA,
   update,
@@ -46,7 +47,6 @@ async function getByPagenation(messageParam) {
       };
     }
   }
-  console.log(con);
 
   const count = await Message.find({ ...con }).countDocuments();
 
@@ -60,7 +60,30 @@ async function getByPagenation(messageParam) {
   ])
     .sort({ _id: -1 })
     .skip(parseInt(messageParam.skip))
-    .limit(parseInt(messageParam.limit));    
+    .limit(parseInt(messageParam.limit));
+}
+
+async function getLastErrMsgs(messageParam) {
+  return await Message.aggregate([
+    {
+      $match: {
+        "message.log": messageParam.log,
+      },
+    },
+    {
+      $group: {
+        _id: { ID: "$message.ID" },
+        lastId: { $max: "$_id" },
+        device: { $last: "$device" },
+        message: { $last: "$message" },
+        timestamp: { $max: "$timestamp" },
+        id: { $last: "$_id" },
+      },
+    }
+  ])
+    .sort({ _id: -1 })
+    .skip(parseInt(messageParam.skip))
+    .limit(parseInt(messageParam.limit));
 }
 
 async function getById(id) {
