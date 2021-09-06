@@ -73,7 +73,7 @@ async function getLastErrMsgs(messageParam) {
     {
       $group: {
         _id: { ID: "$message.ID" },
-        lastId: { $max: "$_id" },
+        lastId: { $last: "$_id" },
         device: { $last: "$device" },
         message: { $last: "$message" },
         timestamp: { $max: "$timestamp" },
