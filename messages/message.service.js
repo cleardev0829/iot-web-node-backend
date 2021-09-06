@@ -55,8 +55,8 @@ async function getByPagenation(messageParam) {
       $match: {
         ...con,
       },
-    },
-    { $addFields: { count: count, id: { _id: 1 } } },
+    },   
+    { $addFields: { count: count } },
   ])
     .sort({ _id: -1 })
     .skip(parseInt(messageParam.skip))
@@ -79,7 +79,7 @@ async function getLastErrMsgs(messageParam) {
         timestamp: { $max: "$timestamp" },
         id: { $last: "$_id" },
       },
-    }
+    },
   ])
     .sort({ _id: -1 })
     .skip(parseInt(messageParam.skip))
