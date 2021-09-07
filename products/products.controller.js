@@ -7,6 +7,7 @@ router.post('/register', register);
 router.get('/', getAll);
 router.get('/current', getCurrent);
 router.get('/getByUID', getByUID);
+router.get('/getByUserId', getByUserId);
 router.get('/:id', getById);
 router.put('/:id', update);
 router.delete('/:id', _delete);
@@ -40,6 +41,12 @@ function getById(req, res, next) {
 
 function getByUID(req, res, next) {  
     productService.getByUID(req.query)
+        .then(device => device ? res.json(device) : res.sendStatus(404))
+        .catch(err => next(err));
+}
+
+function getByUserId(req, res, next) {  
+    productService.getByUserId(req.query)
         .then(device => device ? res.json(device) : res.sendStatus(404))
         .catch(err => next(err));
 }

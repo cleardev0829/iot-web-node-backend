@@ -8,7 +8,7 @@ module.exports = {
   getByDeviceId,
   getById,
   getByPagenation,
-  getLastErrMsgs,
+  getLastMsgs,
   create,
   createA,
   update,
@@ -63,7 +63,7 @@ async function getByPagenation(messageParam) {
     .limit(parseInt(messageParam.limit));
 }
 
-async function getLastErrMsgs(messageParam) {
+async function getLastMsgs(messageParam) {
   return await Message.aggregate([
     {
       $match: {

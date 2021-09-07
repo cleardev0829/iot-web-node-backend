@@ -8,7 +8,7 @@ router.post('/registerA', registerA);
 router.get('/', getAll);
 router.get('/getByDeviceId', getByDeviceId);
 router.get('/getByPagenation', getByPagenation);
-router.get('/getLastErrMsgs', getLastErrMsgs);
+router.get('/getLastMsgs', getLastMsgs);
 router.get('/current', getCurrent);
 router.get('/:id', getById);
 router.put('/:id', update);
@@ -46,8 +46,8 @@ function getByPagenation(req, res, next) {
         .catch(err => next(err));
 }
 
-function getLastErrMsgs(req, res, next) { 
-    messageService.getLastErrMsgs(req.query)
+function getLastMsgs(req, res, next) { 
+    messageService.getLastMsgs(req.query)
         .then(message => message ? res.json(message) : res.sendStatus(404))
         .catch(err => next(err));
 }
