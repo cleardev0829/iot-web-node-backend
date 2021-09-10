@@ -9,5 +9,6 @@ module.exports = {
     Servicer: require('../servicers/servicer.model'),
     Product: require('../products/product.model'),
     File: require('../files/file.model'),
+    Note: require('../notes/note.model'),
     Message: require('../messages/message.model'),
 };

@@ -8,7 +8,6 @@ router.post("/sendToasterNotification", sendToasterNotification);
 router.post("/sendSMSOverHTTP", sendSMSOverHTTP);
 router.post("/sendSMSOverHTTPA", sendSMSOverHTTPA);
 router.post("/sendMailOverHTTP", sendMailOverHTTP);
-router.post("/sendMailOverHTTPA", sendMailOverHTTPA);
 router.post("/iotHubMsgProc", iotHubMsgProc);
 
 module.exports = router;
@@ -30,13 +29,6 @@ function sendToasterNotification(req, res, next) {
 function sendSMSOverHTTP(req, res, next) {
   mailService
     .sendSMSOverHTTP(req.body)
-    .then((data) => res.json(data))
-    .catch((err) => next(err));
-}
-
-function sendMailOverHTTPA(req, res, next) {
-  mailService
-    .sendMailOverHTTPA(req.body)
     .then((data) => res.json(data))
     .catch((err) => next(err));
 }

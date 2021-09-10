@@ -63,7 +63,8 @@ async function update(id, productParam) {
 }
 
 async function _delete(id) {
-  await Product.findByIdAndRemove(id);
+  if (id === "all") await Product.remove();
+  else await Product.findByIdAndRemove(id);
 }
 
 async function deleteByIds(ids) {

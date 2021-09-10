@@ -22,7 +22,6 @@ module.exports = {
   sendSMSOverHTTP,
   sendSMSOverHTTPA,
   sendMailOverHTTP,
-  sendMailOverHTTPA,
   iotHubMsgProc,
 };
 
@@ -33,21 +32,6 @@ const smtptransporter = nodemailer.createTransport({
   auth: {
     user: "rocket.iot.at@gmail.com",
     pass: "InformYourCostumer",
-  },
-});
-
-const smtptransporterA = nodemailer.createTransport({
-  host: "smtp.world4you.com",
-  // port: 25,
-  port: 587,
-  secure: false,
-  secureConnection: false,
-  tls: {
-    rejectUnauthorized: false,
-  },
-  auth: {
-    user: "iot@rocket-at.com",
-    pass: "zSl3#QM9Zf",
   },
 });
 
@@ -115,17 +99,6 @@ function sendMailOverHTTP(params) {
   };
 
   return smtptransporter.sendMail(mailOptions);
-}
-
-function sendMailOverHTTPA(params) {
-  const mailOptions = {
-    from: `contact@rockets.co`,
-    to: params.email,
-    subject: params.subject,
-    html: params.emailBody,
-  };
-
-  return smtptransporterA.sendMail(mailOptions);
 }
 
 function sendSMSOverHTTP(params) {
