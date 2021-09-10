@@ -156,7 +156,7 @@ async function iotHubMsgProc(params) {
 
                     sendSMSOverHTTP({
                       phone,
-                      message: `An error was reported from the(${deviceUID}) - ${address} \n Error message: ${params.message.text}`,
+                      message: `An error was reported from the(${deviceUID}) - ${address}, Error message: ${params.message.text}`,
                     })
                       .then((data) => {
                         resolve(data);
@@ -169,7 +169,7 @@ async function iotHubMsgProc(params) {
                   sendMailOverHTTP({
                     email: email,
                     subject: `Error message from ${deviceUID}`,
-                    emailBody: `An error was reported from the(${deviceUID}) - ${address} \n Error message: ${params.message.text}`,
+                    emailBody: `An error was reported from the(${deviceUID}) - ${address}, Error message: ${params.message.text}`,
                   })
                     .then((data) => {
                       resolve(data);
