@@ -169,7 +169,7 @@ async function iotHubMsgProc(params) {
                   sendMailOverHTTP({
                     email: email,
                     subject: `Error message from ${deviceUID}`,
-                    emailBody: `An error was reported from the(${deviceUID}) - ${address}, Error message: ${params.message.text}`,
+                    emailBody: `<h3>An error was reported from the(${deviceUID}) - ${address}, Error message: ${params.message.text}</h3>`,
                   })
                     .then((data) => {
                       resolve(data);
@@ -190,10 +190,10 @@ async function iotHubMsgProc(params) {
 
           promises = [];
           servicerService.getAll().then(async (data) => {
-            const deviceUID = device._id;
+            const deviceId = device._id;
 
             const servicers = _.filter(data, (item) =>
-              item.devices.includes(deviceUID)
+              item.devices.includes(deviceId)
             );
 
             promises.push(
@@ -211,7 +211,7 @@ async function iotHubMsgProc(params) {
 
                           sendSMSOverHTTP({
                             phone,
-                            message: `Error message(${description}) from ${deviceUID}`,
+                            message: `An error was reported from the(${deviceUID}) - ${address}, Error message: ${params.message.text}`,
                           })
                             .then((data) => {
                               resolve(data);
@@ -225,7 +225,7 @@ async function iotHubMsgProc(params) {
                           sendMailOverHTTP({
                             email: email,
                             subject: `Error message from ${deviceUID}`,
-                            emailBody: `<h3>${number} - ${description}</h3>`,
+                            emailBody: `<h3>An error was reported from the(${deviceUID}) - ${address}, Error message: ${params.message.text}</h3>`,
                           })
                             .then((data) => {
                               resolve(data);
