@@ -40,10 +40,10 @@ async function sendNativeNotification(params) {
     {
       title: params.title,
       message: params.message,
-      appID: 'test appID',
+      appID: "test appID",
       icon: path.join(__dirname, "icon.jpg"),
       sound: "SMS",
-      type: 'info',
+      type: "info",
       time: 5000,
       wait: true,
     },
@@ -72,7 +72,7 @@ async function sendToasterNotification(params) {
       title: "Windows Toaster Notification",
       message: params.message,
       icon: path.join(__dirname, "icon.jpg"),
-      type: 'warning',
+      type: "warning",
       sound: "SMS",
     },
     function (error, response, metadata) {
@@ -106,12 +106,7 @@ function sendSMSOverHTTP(params) {
   const phone = params.phone;
   const message = params.message;
 
-  const body = `
-      Hi
-      Occured some error from your device. 
-      The error is like follow.
-      ${message}
-      `;
+  const body = `${message}`;
 
   return client.messages.create({
     body: body,

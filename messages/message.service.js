@@ -78,11 +78,10 @@ async function getLastMsgs(messageParam) {
     {
       $group: {
         _id: { ID: "$message.ID" },
-        lastId: { $last: "$_id" },
+        id: { $last: "$_id" },
         device: { $last: "$device" },
         message: { $last: "$message" },
-        timestamp: { $max: "$timestamp" },
-        id: { $last: "$_id" },
+        timestamp: { $max: "$timestamp" },        
       },
     },
   ])
