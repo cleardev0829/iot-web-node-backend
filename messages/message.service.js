@@ -36,21 +36,21 @@ async function getByPagenation(messageParam) {
 
   if (messageParam.log) {
     if (messageParam.log === "all") {
-      con = {       
+      con = {
         "message.log": { $in: ["error", "info", "alarm"] },
       };
     } else {
-      con = {       
+      con = {
         "message.log": messageParam.log,
       };
     }
   }
-  
-  if(messageParam.deviceId) {
+
+  if (messageParam.deviceId) {
     con = {
       ...con,
       "message.ID": parseInt(messageParam.deviceId),
-    }
+    };
   }
 
   const count = await Message.find({ ...con }).countDocuments();
@@ -60,7 +60,7 @@ async function getByPagenation(messageParam) {
       $match: {
         ...con,
       },
-    },   
+    },
     { $addFields: { count: count } },
   ])
     .sort({ _id: -1 })
@@ -69,7 +69,7 @@ async function getByPagenation(messageParam) {
 }
 
 async function getLastMsgs(messageParam) {
-  return await Message.aggregate([
+  let aggregate = [
     {
       $match: {
         "message.log": messageParam.log,
@@ -81,10 +81,12 @@ async function getLastMsgs(messageParam) {
         id: { $last: "$_id" },
         device: { $last: "$device" },
         message: { $last: "$message" },
-        timestamp: { $max: "$timestamp" },        
+        timestamp: { $max: "$timestamp" },            
       },
-    },
-  ])
+    },    
+  ];
+
+  return await Message.aggregate([...aggregate])
     .sort({ _id: -1 })
     .skip(parseInt(messageParam.skip))
     .limit(parseInt(messageParam.limit));

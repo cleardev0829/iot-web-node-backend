@@ -131,15 +131,16 @@ async function iotHubMsgProc(params) {
   messageService.createA(params);
 
   if (log === "error") {
-    const deviceId = params.message.ID;
+    const deviceUID = params.message.ID;
     const state = params.message.state ? params.message.state : 0;
     const errid = params.message.errid ? params.message.errid : 0;
     const number = log === "info" ? state : log === "error" ? errid : 0;
     const description = constant.descriptions[log][number];
 
-    productService.getByUID({ uid: deviceId }).then(async (data) => {
+    productService.getByUID({ uid: deviceUID }).then(async (data) => {
       if (data && data.categories) {
         const device = data;
+        const address = device.address;
         const users = data.categories;
         let promises = [];
 
@@ -155,7 +156,7 @@ async function iotHubMsgProc(params) {
 
                     sendSMSOverHTTP({
                       phone,
-                      message: `Error message(${description}) from ${deviceId}`,
+                      message: `An error was reported from the(${deviceUID}) - ${address} \n Error message: ${params.message.text}`,
                     })
                       .then((data) => {
                         resolve(data);
@@ -167,8 +168,8 @@ async function iotHubMsgProc(params) {
 
                   sendMailOverHTTP({
                     email: email,
-                    subject: `Error message from ${deviceId}`,
-                    emailBody: `<h3>${number} - ${description}</h3>`,
+                    subject: `Error message from ${deviceUID}`,
+                    emailBody: `An error was reported from the(${deviceUID}) - ${address} \n Error message: ${params.message.text}`,
                   })
                     .then((data) => {
                       resolve(data);
@@ -210,7 +211,7 @@ async function iotHubMsgProc(params) {
 
                           sendSMSOverHTTP({
                             phone,
-                            message: `Error message(${description}) from ${deviceId}`,
+                            message: `Error message(${description}) from ${deviceUID}`,
                           })
                             .then((data) => {
                               resolve(data);
@@ -223,7 +224,7 @@ async function iotHubMsgProc(params) {
                         if (type === 0 || type === 1) {
                           sendMailOverHTTP({
                             email: email,
-                            subject: `Error message from ${deviceId}`,
+                            subject: `Error message from ${deviceUID}`,
                             emailBody: `<h3>${number} - ${description}</h3>`,
                           })
                             .then((data) => {
