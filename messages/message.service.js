@@ -36,15 +36,20 @@ async function getByPagenation(messageParam) {
 
   if (messageParam.log) {
     if (messageParam.log === "all") {
-      con = {
-        "message.ID": parseInt(messageParam.deviceId),
+      con = {       
         "message.log": { $in: ["error", "info", "alarm"] },
       };
     } else {
-      con = {
-        "message.ID": parseInt(messageParam.deviceId),
+      con = {       
         "message.log": messageParam.log,
       };
+    }
+  }
+  
+  if(messageParam.deviceId) {
+    con = {
+      ...con,
+      "message.ID": parseInt(messageParam.deviceId),
     }
   }
 
