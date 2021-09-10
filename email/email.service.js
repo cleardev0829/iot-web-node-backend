@@ -140,7 +140,7 @@ async function iotHubMsgProc(params) {
     productService.getByUID({ uid: deviceUID }).then(async (data) => {
       if (data && data.categories) {
         const device = data;
-        const address = device.address;
+        const address = device.location.address;console.log(device)
         const users = data.categories;
         let promises = [];
 
