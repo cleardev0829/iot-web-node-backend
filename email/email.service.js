@@ -128,10 +128,12 @@ function sendSMSOverHTTPA(params) {
 
 async function iotHubMsgProc(params) {
   const log = params.message.log;
-  messageService.createA(params);
+  const deviceUID = params.message.ID;
+  productService.getByUID({ uid: deviceUID }).then((data) => {
+    messageService.createA({ ...params, lift: data.id });
+  });
 
   if (log === "error") {
-    const deviceUID = params.message.ID;
     const state = params.message.state ? params.message.state : 0;
     const errid = params.message.errid ? params.message.errid : 0;
     const number = log === "info" ? state : log === "error" ? errid : 0;

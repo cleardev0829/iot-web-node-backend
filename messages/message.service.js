@@ -79,11 +79,12 @@ async function getLastMsgs(messageParam) {
       $group: {
         _id: { ID: "$message.ID" },
         id: { $last: "$_id" },
+        lift: { $last: "$lift" },
         device: { $last: "$device" },
         message: { $last: "$message" },
-        timestamp: { $max: "$timestamp" },            
+        timestamp: { $max: "$timestamp" },
       },
-    },    
+    },
   ];
 
   return await Message.aggregate([...aggregate])
