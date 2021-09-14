@@ -143,6 +143,7 @@ async function iotHubMsgProc(params) {
       if (data && data.categories) {
         const device = data;
         const address = device.location.address;
+        const deviceName = device.name;
         const users = data.categories;
         let promises = [];
 
@@ -158,7 +159,7 @@ async function iotHubMsgProc(params) {
 
                     sendSMSOverHTTP({
                       phone,
-                      message: `An error was reported from the ${deviceUID} - ${address}. ${description}: ${params.message.text}`,
+                      message: `An error was reported from the ${deviceUID} - ${deviceName} - ${address}. ${description}: ${params.message.text}`,
                     })
                       .then((data) => {
                         resolve(data);
@@ -171,7 +172,7 @@ async function iotHubMsgProc(params) {
                   sendMailOverHTTP({
                     email: email,
                     subject: `Error message from ${deviceUID}`,
-                    emailBody: `<h3>An error was reported from the ${deviceUID} - ${address}. ${description}: ${params.message.text}</h3>`,
+                    emailBody: `<h3>An error was reported from the ${deviceUID} - ${deviceName} - ${address}. ${description}: ${params.message.text}</h3>`,
                   })
                     .then((data) => {
                       resolve(data);
@@ -213,7 +214,7 @@ async function iotHubMsgProc(params) {
 
                           sendSMSOverHTTP({
                             phone,
-                            message: `An error was reported from the ${deviceUID} - ${address}. ${description}: ${params.message.text}`,
+                            message: `An error was reported from the ${deviceUID} - ${deviceName} - ${address}. ${description}: ${params.message.text}`,
                           })
                             .then((data) => {
                               resolve(data);
@@ -227,7 +228,7 @@ async function iotHubMsgProc(params) {
                           sendMailOverHTTP({
                             email: email,
                             subject: `Error message from ${deviceUID}`,
-                            emailBody: `<h3>An error was reported from the ${deviceUID} - ${address}. ${description}: ${params.message.text}</h3>`,
+                            emailBody: `<h3>An error was reported from the ${deviceUID} - ${deviceName} - ${address}. ${description}: ${params.message.text}</h3>`,
                           })
                             .then((data) => {
                               resolve(data);
