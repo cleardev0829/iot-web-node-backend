@@ -13,7 +13,6 @@ module.exports = {
   createA,
   update,
   delete: _delete,
-  deleteByIds: deleteByIds,
 };
 
 const Event = mongoose.model(
@@ -55,21 +54,6 @@ async function getByPagenation(messageParam) {
   }
 
   const count = await Message.find({ ...con }).countDocuments();
-  const tripsData = await Message.aggregate([
-    {
-      $match: {
-        ...con,
-      },
-    },
-    {
-      $group: {
-        _id: { ID: "$message.ID" },
-        maxTrips: { $max: "$message.trips" },
-        maxTripsWithoutErrors: { $max: "$message.tripsWithoutErrors" },
-        maxOperatingHours: { $max: "$message.operating hours" },
-      },
-    },
-  ]);
 
   return await Message.aggregate([
     {
@@ -77,7 +61,7 @@ async function getByPagenation(messageParam) {
         ...con,
       },
     },
-    { $addFields: { count: count, ...tripsData } },
+    { $addFields: { count: count } },
   ])
     .sort({ _id: -1 })
     .skip(parseInt(messageParam.skip))
@@ -146,10 +130,4 @@ async function update(id, messageParam) {
 async function _delete(id) {
   if (id === "all") await Message.remove();
   else await Message.findByIdAndRemove(id);
-}
-
-async function deleteByIds(messageIds) {
-  messageIds.map(async (id) => {
-    await Message.findByIdAndRemove(id);
-  });
 }

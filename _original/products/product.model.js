@@ -6,6 +6,7 @@ const schema = new Schema({
   uid: { type: String, unique: true, required: true },
   name: { type: String, required: true },
   categories: { type: Array },
+  lift: { type: ObjectId, required: true, ref: "lift" },
   location: {
     address: { type: String },
     lat: { type: Number },

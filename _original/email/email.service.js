@@ -14,7 +14,7 @@ const userService = require("../users/user.service");
 const servicerService = require("../servicers/servicer.service");
 
 const accountSid = "AC0b6ed65b3b28b81e5816eeb39c2e30cd";
-const authToken = "a70723aef12d4f42105b145ebfc2ca69";
+const authToken = "c998d5eeea33db16901aa939c8eb62ef";
 
 module.exports = {
   sendNativeNotification,
