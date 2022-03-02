@@ -12,7 +12,7 @@ router.get("/deleteContainer", deleteContainer);
 module.exports = router;
 
 function getBlobsInContainer(req, res, next) {
-  blob
+  azureService
     .getBlobsInContainer(req.body)
     .then((data) => res.json(data))
     .catch((err) => next(err));
