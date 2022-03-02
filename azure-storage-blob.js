@@ -14,7 +14,7 @@ const isStorageConfigured = () => {
 };
 
 // return list of blobs in container to display
-async function getBlobsInContainer(containerName) {
+const getBlobsInContainer = async (containerName) => {
   console.log("getBlobsInContainer params", containerName);
   const returnedBlobUrls = [];
   const blobList = [];
@@ -28,7 +28,6 @@ async function getBlobsInContainer(containerName) {
   const containerClient = blobService.getContainerClient(containerName);
 
   // get list of blobs in container
-  // eslint-disable-next-line
   let index = 0;
   for await (const blob of containerClient.listBlobsFlat()) {
     index++;
@@ -48,6 +47,6 @@ async function getBlobsInContainer(containerName) {
   }
 
   return await blobList;
-}
+};
 
 module.exports = { getBlobsInContainer };
