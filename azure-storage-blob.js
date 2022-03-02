@@ -1,4 +1,3 @@
-// import { BlobServiceClient, ContainerClient } from "@azure/storage-blob";
 const storage = require("@azure/storage-blob");
 
 const sasToken =
@@ -6,34 +5,27 @@ const sasToken =
   "sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupix&se=2022-12-31T13:10:11Z&st=2022-01-31T05:10:11Z&spr=https&sig=CHgfCT%2FZpJQXb%2F%2B1s0xuiWVkQW7VP78eFFeIPtCXw8Q%3D"; // Fill string with your SAS token
 
 const storageAccountName =
-  process.env.storageresourcename || "rocketiotparserstorage"; // Fill string with your Storage resource name
+  process.env.storageresourcename || "rocketiotparserstorage";
 
-// Feature flag - disable storage feature to app if not configured
 const isStorageConfigured = () => {
   return !storageAccountName || !sasToken ? false : true;
 };
 
-// return list of blobs in container to display
+const storageUrl = `https://${storageAccountName}.blob.core.windows.net`;
+
+const blobService = new storage.BlobServiceClient(`${storageUrl}/?${sasToken}`);
+
 const getBlobsInContainer = async (containerName) => {
-  console.log("getBlobsInContainer params", containerName);
   const returnedBlobUrls = [];
   const blobList = [];
 
-  // get BlobService = notice `?` is pulled out of sasToken - if created in Azure portal
-  const blobService = new storage.BlobServiceClient(
-    `https://${storageAccountName}.blob.core.windows.net/?${sasToken}`
-  );
-
-  // get Container - full public read access
   const containerClient = blobService.getContainerClient(containerName);
 
-  // get list of blobs in container
   let index = 0;
   for await (const blob of containerClient.listBlobsFlat()) {
     index++;
 
-    // if image is public, just construct URL
-    const blobUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${blob.name}`;
+    const blobUrl = `${storageUrl}/${containerName}/${blob.name}`;
     returnedBlobUrls.push(blobUrl);
 
     blobList.push({
@@ -49,4 +41,70 @@ const getBlobsInContainer = async (containerName) => {
   return await blobList;
 };
 
-module.exports = { getBlobsInContainer };
+const deleteBlobInContainer = async (containerName, fileName) => {
+  const containerClient = blobService.getContainerClient(containerName);
+  const blockBlobClient = containerClient.getBlockBlobClient(fileName);
+  const blobDeleteResponse = await blockBlobClient.delete();
+
+  return await blobDeleteResponse;
+};
+
+const downloadBlobFromContainer = async (containerName, file) => {
+  const containerClient = blobService.getContainerClient(containerName);
+  const blockBlobClient = containerClient.getBlockBlobClient(file.name);
+  const blobDownloadResponse = await blockBlobClient.download(0);
+
+  fetch(file.blobUrl).then((response) => {
+    response.blob().then((blob) => {
+      let url = window.URL.createObjectURL(blob);
+      let a = document.createElement("a");
+      a.href = url;
+      a.download = file.name;
+      a.click();
+    });
+  });
+
+  return blobDownloadResponse;
+};
+
+const createBlobInContainer = async (containerClient, file) => {
+  const blobClient = containerClient.getBlockBlobClient(file.name);
+  const options = { blobHTTPHeaders: { blobContentType: file.type } };
+
+  // upload file
+  await blobClient.uploadBrowserData(file, options);
+};
+
+const uploadFileToBlob = async (containerName, file) => {
+  if (!file) return [];
+
+  const containerClient = blobService.getContainerClient(containerName);
+  await containerClient.createIfNotExists({
+    access: "container",
+  });
+
+  // upload file
+  await createBlobInContainer(containerClient, file);
+
+  const blobUrl = `${storageUrl}/${containerName}/${file.name}`;
+  return blobUrl;
+};
+
+const deleteContainer = async (containerName) => {
+  if (!containerName) return [];
+
+  const containerClient = blobService.getContainerClient(containerName);
+  const data = await containerClient.deleteIfExists({
+    access: "container",
+  });
+
+  return data;
+};
+
+module.exports = {
+  getBlobsInContainer,
+  deleteBlobInContainer,
+  downloadBlobFromContainer,
+  uploadFileToBlob,
+  deleteContainer,
+};
