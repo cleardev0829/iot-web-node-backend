@@ -22,9 +22,9 @@ function register(req, res, next) {
 }
 
 function getAll(req, res, next) {
-  blob.getBlobsInContainer("tableau-mt42");
-  blob
-    .getBlobsInContainer("tableau-mt42")
+  // blob.getBlobsInContainer("tableau-mt42");
+  folderService
+    .getAll()
     .then((folders) => res.json(folders))
     .catch((err) => next(err));
 }
