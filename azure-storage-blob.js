@@ -46,7 +46,7 @@ async function getBlobsInContainer(containerName) {
       contentLength: blob.properties.contentLength,
     });
   }
-  console.log("============================", res);
+
   return await blobList;
 }
 
