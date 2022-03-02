@@ -78,7 +78,7 @@ const createContainerInStorage = async ({ containerName }) => {
   if (!containerName) return [];
 
   const containerClient = blobService.getContainerClient(containerName);
-  await containerClient.createIfNotExists({
+  const data = await containerClient.createIfNotExists({
     access: "container",
   });
 
