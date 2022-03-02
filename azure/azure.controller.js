@@ -7,6 +7,7 @@ router.post("/getBlobsInContainer", getBlobsInContainer);
 router.get("/deleteBlobInContainer", deleteBlobInContainer);
 router.get("/downloadBlobInContainer", downloadBlobInContainer);
 router.get("/uploadBlobInContainer", uploadBlobInContainer);
+router.get("/createContainerInStorage", createContainerInStorage);
 router.get("/deleteContainerInStorage", deleteContainerInStorage);
 
 module.exports = router;
@@ -35,6 +36,13 @@ function downloadBlobInContainer(req, res, next) {
 function uploadBlobInContainer(req, res, next) {
   azureService
     .uploadBlobInContainer(req.body)
+    .then((data) => res.json(data))
+    .catch((err) => next(err));
+}
+
+function createContainerInStorage(req, res, next) {
+  azureService
+    .createContainerInStorage(req.body)
     .then((data) => res.json(data))
     .catch((err) => next(err));
 }

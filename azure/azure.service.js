@@ -57,7 +57,7 @@ const downloadBlobInContainer = async ({ containerName, fileName }) => {
   return blobDownloadResponse;
 };
 
-const uploadBlobInContainer = async (containerName, file) => {
+const uploadBlobInContainer = async ({ containerName, file }) => {
   if (!file) return [];
 
   const containerClient = blobService.getContainerClient(containerName);
@@ -74,7 +74,18 @@ const uploadBlobInContainer = async (containerName, file) => {
   return blobUrl;
 };
 
-const deleteContainerInStorage = async (containerName) => {
+const createContainerInStorage = async ({ containerName }) => {
+  if (!containerName) return [];
+
+  const containerClient = blobService.getContainerClient(containerName);
+  await containerClient.createIfNotExists({
+    access: "container",
+  });
+
+  return data;
+};
+
+const deleteContainerInStorage = async ({ containerName }) => {
   if (!containerName) return [];
 
   const containerClient = blobService.getContainerClient(containerName);
@@ -90,6 +101,7 @@ module.exports = {
   deleteBlobInContainer,
   downloadBlobInContainer,
   uploadBlobInContainer,
+  createContainerInStorage,
   deleteContainerInStorage,
 };
 
