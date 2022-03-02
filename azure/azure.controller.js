@@ -4,11 +4,11 @@ const azureService = require("./azure.service");
 
 // routes
 router.post("/getBlobsInContainer", getBlobsInContainer);
-router.get("/deleteBlobInContainer", deleteBlobInContainer);
-router.get("/downloadBlobInContainer", downloadBlobInContainer);
-router.get("/uploadBlobInContainer", uploadBlobInContainer);
-router.get("/createContainerInStorage", createContainerInStorage);
-router.get("/deleteContainerInStorage", deleteContainerInStorage);
+router.post("/deleteBlobInContainer", deleteBlobInContainer);
+router.post("/downloadBlobInContainer", downloadBlobInContainer);
+router.post("/uploadBlobInContainer", uploadBlobInContainer);
+router.post("/createContainerInStorage", createContainerInStorage);
+router.post("/deleteContainerInStorage", deleteContainerInStorage);
 
 module.exports = router;
 
