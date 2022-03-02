@@ -1,7 +1,6 @@
 ﻿const express = require("express");
 const router = express.Router();
 const folderService = require("./folder.service");
-const blob = require("../azure-storage-blob");
 
 // routes
 router.post("/register", register);
@@ -22,20 +21,10 @@ function register(req, res, next) {
 }
 
 function getAll(req, res, next) {
-  // blob
-  //   .getBlobsInContainer("tableau-mt42")
-  //   .then((folders) => res.json(folders))
-  //   .catch((err) => next(err));
-
-  blob
-    .deleteContainer("test")
+  folderService
+    .getAll()
     .then((folders) => res.json(folders))
     .catch((err) => next(err));
-
-  // folderService
-  //   .getAll()
-  //   .then((folders) => res.json(folders))
-  //   .catch((err) => next(err));
 }
 
 function getCurrent(req, res, next) {
