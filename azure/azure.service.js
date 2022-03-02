@@ -15,14 +15,6 @@ const storageUrl = `https://${storageAccountName}.blob.core.windows.net`;
 
 const blobService = new storage.BlobServiceClient(`${storageUrl}/?${sasToken}`);
 
-module.exports = {
-  getBlobsInContainer,
-  deleteBlobInContainer,
-  downloadBlobFromContainer,
-  uploadFileToBlob,
-  deleteContainer,
-};
-
 const getBlobsInContainer = async ({ containerName }) => {
   const returnedBlobUrls = [];
   const blobList = [];
@@ -49,7 +41,7 @@ const getBlobsInContainer = async ({ containerName }) => {
   return await blobList;
 };
 
-const deleteBlobInContainer = async (containerName, fileName) => {
+const deleteBlobInContainer = async ({ containerName, fileName }) => {
   const containerClient = blobService.getContainerClient(containerName);
   const blockBlobClient = containerClient.getBlockBlobClient(fileName);
   const blobDeleteResponse = await blockBlobClient.delete();
@@ -57,33 +49,15 @@ const deleteBlobInContainer = async (containerName, fileName) => {
   return await blobDeleteResponse;
 };
 
-const downloadBlobFromContainer = async (containerName, file) => {
+const downloadBlobInContainer = async ({ containerName, fileName }) => {
   const containerClient = blobService.getContainerClient(containerName);
-  const blockBlobClient = containerClient.getBlockBlobClient(file.name);
+  const blockBlobClient = containerClient.getBlockBlobClient(fileName);
   const blobDownloadResponse = await blockBlobClient.download(0);
-
-  fetch(file.blobUrl).then((response) => {
-    response.blob().then((blob) => {
-      let url = window.URL.createObjectURL(blob);
-      let a = document.createElement("a");
-      a.href = url;
-      a.download = file.name;
-      a.click();
-    });
-  });
 
   return blobDownloadResponse;
 };
 
-const createBlobInContainer = async (containerClient, file) => {
-  const blobClient = containerClient.getBlockBlobClient(file.name);
-  const options = { blobHTTPHeaders: { blobContentType: file.type } };
-
-  // upload file
-  await blobClient.uploadBrowserData(file, options);
-};
-
-const uploadFileToBlob = async (containerName, file) => {
+const uploadBlobInContainer = async (containerName, file) => {
   if (!file) return [];
 
   const containerClient = blobService.getContainerClient(containerName);
@@ -92,13 +66,15 @@ const uploadFileToBlob = async (containerName, file) => {
   });
 
   // upload file
-  await createBlobInContainer(containerClient, file);
+  const blobClient = containerClient.getBlockBlobClient(file.name);
+  const options = { blobHTTPHeaders: { blobContentType: file.type } };
+  await blobClient.uploadBrowserData(file, options);
 
   const blobUrl = `${storageUrl}/${containerName}/${file.name}`;
   return blobUrl;
 };
 
-const deleteContainer = async (containerName) => {
+const deleteContainerInStorage = async (containerName) => {
   if (!containerName) return [];
 
   const containerClient = blobService.getContainerClient(containerName);
@@ -108,3 +84,21 @@ const deleteContainer = async (containerName) => {
 
   return data;
 };
+
+module.exports = {
+  getBlobsInContainer,
+  deleteBlobInContainer,
+  downloadBlobInContainer,
+  uploadBlobInContainer,
+  deleteContainerInStorage,
+};
+
+// fetch(file.blobUrl).then((response) => {
+//   response.blob().then((blob) => {
+//     let url = window.URL.createObjectURL(blob);
+//     let a = document.createElement("a");
+//     a.href = url;
+//     a.download = file.name;
+//     a.click();
+//   });
+// });
