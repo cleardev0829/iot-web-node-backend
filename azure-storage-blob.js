@@ -16,6 +16,7 @@ const isStorageConfigured = () => {
 // return list of blobs in container to display
 async function getBlobsInContainer(containerName) {
   console.log("getBlobsInContainer params", containerName);
+  const returnedBlobUrls = [];
   const blobList = [];
 
   // get BlobService = notice `?` is pulled out of sasToken - if created in Azure portal
