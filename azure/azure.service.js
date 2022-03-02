@@ -54,7 +54,7 @@ const downloadBlobInContainer = async ({ containerName, fileName }) => {
   const blockBlobClient = containerClient.getBlockBlobClient(fileName);
   const blobDownloadResponse = await blockBlobClient.download(0);
 
-  return blobDownloadResponse;
+  return await blobDownloadResponse;
 };
 
 const uploadBlobInContainer = async ({ containerName, file }) => {
@@ -68,7 +68,7 @@ const uploadBlobInContainer = async ({ containerName, file }) => {
   // upload file
   const blobClient = containerClient.getBlockBlobClient(file.name);
   const options = { blobHTTPHeaders: { blobContentType: file.type } };
-  await blobClient.uploadBrowserData(file, options);
+  const response = await blobClient.uploadBrowserData(file, options);
 
   const blobUrl = `${storageUrl}/${containerName}/${file.name}`;
   return blobUrl;
@@ -76,7 +76,7 @@ const uploadBlobInContainer = async ({ containerName, file }) => {
 
 const createContainerInStorage = async ({ containerName }) => {
   if (!containerName) return [];
-
+  blobSe;
   const containerClient = blobService.getContainerClient(containerName);
   const data = await containerClient.createIfNotExists({
     access: "container",
