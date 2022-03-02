@@ -76,7 +76,7 @@ const uploadBlobInContainer = async ({ containerName, file }) => {
 
 const createContainerInStorage = async ({ containerName }) => {
   if (!containerName) return [];
-  blobSe;
+
   const containerClient = blobService.getContainerClient(containerName);
   const data = await containerClient.createIfNotExists({
     access: "container",
