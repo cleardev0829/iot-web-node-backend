@@ -104,7 +104,10 @@ const listContainersInStorage = async ({ any }) => {
   let containerItem = await iter.next();
   let containerList = [];
   while (!containerItem.done) {
-    containerList.push(containerItem);
+    containerList.push({
+      ...containerItem.value,
+      id: containerItam.value.properties.etag,
+    });
     containerItem = await iter.next();
   }
 
