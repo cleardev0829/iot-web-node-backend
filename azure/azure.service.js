@@ -98,13 +98,16 @@ const deleteContainerInStorage = async ({ containerName }) => {
 
 const listContainersInStorage = async ({ containerName }) => {
   if (!containerName) return [];
-  // const containerClient = blobService.getContainerClient(containerName);
-  const data = await blobService.listContainers();
-  // const data = await containerClient.deleteIfExists({
-  //   access: "container",
-  // });
 
-  return data;
+  const iter = blobServiceClient.listContainers();
+  let containerItem = await iter.next();
+  let containerList = [];
+  while (!containerItem.done) {
+    containerList.push(containerItem);
+    containerItem = await iter.next();
+  }
+
+  return containerList;
 };
 
 module.exports = {
