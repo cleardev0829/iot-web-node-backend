@@ -13,13 +13,15 @@ const isStorageConfigured = () => {
 
 const storageUrl = `https://${storageAccountName}.blob.core.windows.net`;
 
-const blobService = new storage.BlobServiceClient(`${storageUrl}/?${sasToken}`);
+const blobServiceClient = new storage.BlobServiceClient(
+  `${storageUrl}/?${sasToken}`
+);
 
 const getBlobsInContainer = async ({ containerName }) => {
   const returnedBlobUrls = [];
   const blobList = [];
 
-  const containerClient = blobService.getContainerClient(containerName);
+  const containerClient = blobServiceClient.getContainerClient(containerName);
 
   let index = 0;
   for await (const blob of containerClient.listBlobsFlat()) {
@@ -42,7 +44,7 @@ const getBlobsInContainer = async ({ containerName }) => {
 };
 
 const deleteBlobInContainer = async ({ containerName, fileName }) => {
-  const containerClient = blobService.getContainerClient(containerName);
+  const containerClient = blobServiceClient.getContainerClient(containerName);
   const blockBlobClient = containerClient.getBlockBlobClient(fileName);
   const blobDeleteResponse = await blockBlobClient.delete();
 
@@ -50,7 +52,7 @@ const deleteBlobInContainer = async ({ containerName, fileName }) => {
 };
 
 const downloadBlobInContainer = async ({ containerName, fileName }) => {
-  const containerClient = blobService.getContainerClient(containerName);
+  const containerClient = blobServiceClient.getContainerClient(containerName);
   const blockBlobClient = containerClient.getBlockBlobClient(fileName);
   const blobDownloadResponse = await blockBlobClient.download(0);
 
@@ -60,7 +62,7 @@ const downloadBlobInContainer = async ({ containerName, fileName }) => {
 const uploadBlobInContainer = async ({ containerName, file }) => {
   if (!file) return [];
 
-  const containerClient = blobService.getContainerClient(containerName);
+  const containerClient = blobServiceClient.getContainerClient(containerName);
   // await containerClient.createIfNotExists({
   //   access: "container",
   // });
@@ -78,7 +80,7 @@ const uploadBlobInContainer = async ({ containerName, file }) => {
 const createContainerInStorage = async ({ containerName }) => {
   if (!containerName) return [];
 
-  const containerClient = blobService.getContainerClient(containerName);
+  const containerClient = blobServiceClient.getContainerClient(containerName);
   const data = await containerClient.createIfNotExists({
     access: "container",
   });
@@ -88,7 +90,7 @@ const createContainerInStorage = async ({ containerName }) => {
 
 const deleteContainerInStorage = async ({ containerName }) => {
   if (!containerName) return [];
-  const containerClient = blobService.getContainerClient(containerName);
+  const containerClient = blobServiceClient.getContainerClient(containerName);
   const data = await containerClient.deleteIfExists({
     access: "container",
   });
@@ -96,10 +98,8 @@ const deleteContainerInStorage = async ({ containerName }) => {
   return data;
 };
 
-const listContainersInStorage = async ({ containerName }) => {
-  if (!containerName) return [];
-
-  const iter = blobService.listContainers();
+const listContainersInStorage = async () => {
+  const iter = blobServiceClient.listContainers();
   let containerItem = await iter.next();
   let containerList = [];
   while (!containerItem.done) {
