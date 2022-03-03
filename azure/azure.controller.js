@@ -10,6 +10,7 @@ router.post("/uploadBlobInContainer", uploadBlobInContainer);
 router.post("/createContainerInStorage", createContainerInStorage);
 router.post("/deleteContainerInStorage", deleteContainerInStorage);
 router.post("/listContainersInStorage", listContainersInStorage);
+router.post("/isExistsContainerInStorage", isExistsContainerInStorage);
 
 module.exports = router;
 
@@ -58,6 +59,13 @@ function deleteContainerInStorage(req, res, next) {
 function listContainersInStorage(req, res, next) {
   azureService
     .listContainersInStorage(req.body)
+    .then((data) => res.json(data))
+    .catch((err) => next(err));
+}
+
+function isExistsContainerInStorage(req, res, next) {
+  azureService
+    .isExistsContainerInStorage(req.body)
     .then((data) => res.json(data))
     .catch((err) => next(err));
 }

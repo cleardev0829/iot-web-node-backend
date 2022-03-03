@@ -90,6 +90,7 @@ const createContainerInStorage = async ({ containerName }) => {
 
 const deleteContainerInStorage = async ({ containerName }) => {
   if (!containerName) return [];
+
   const containerClient = blobServiceClient.getContainerClient(containerName);
   const data = await containerClient.deleteIfExists({
     access: "container",
@@ -110,6 +111,15 @@ const listContainersInStorage = async ({ any }) => {
   return containerList;
 };
 
+const isExistsContainerInStorage = async ({ containerName }) => {
+  if (!containerName) return [];
+
+  const containerClient = blobServiceClient.getContainerClient(containerName);
+  const data = await containerClient.exists();
+
+  return data;
+};
+
 module.exports = {
   getBlobsInContainer,
   deleteBlobInContainer,
@@ -118,6 +128,7 @@ module.exports = {
   createContainerInStorage,
   deleteContainerInStorage,
   listContainersInStorage,
+  isExistsContainerInStorage,
 };
 
 // fetch(file.blobUrl).then((response) => {
