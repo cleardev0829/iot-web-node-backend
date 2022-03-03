@@ -57,7 +57,7 @@ function deleteContainerInStorage(req, res, next) {
 
 function listContainersInStorage(req, res, next) {
   azureService
-    .deleteContainerInStorage(req.body)
+    .listContainersInStorage(req.body)
     .then((data) => res.json(data))
     .catch((err) => next(err));
 }

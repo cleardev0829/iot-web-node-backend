@@ -98,7 +98,7 @@ const deleteContainerInStorage = async ({ containerName }) => {
   return data;
 };
 
-const listContainersInStorage = async () => {
+const listContainersInStorage = async ({ any }) => {
   const iter = blobServiceClient.listContainers();
   let containerItem = await iter.next();
   let containerList = [];
