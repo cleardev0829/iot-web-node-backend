@@ -19,5 +19,5 @@ module.exports = {
   File: require("../files/file.model"),
   Note: require("../notes/note.model"),
   Message: require("../messages/message.model"),
-  Folder: require("../folders/folder.model"),
+  Folder: require("../folders~/folder.model"),
 };
