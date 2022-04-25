@@ -19,7 +19,6 @@ app.use("/products", require("./products/products.controller"));
 app.use("/messages", require("./messages/messages.controller"));
 app.use("/files", require("./files/file.controller"));
 app.use("/notes", require("./notes/note.controller"));
-// app.use("/folders", require("./folders~/folder.controller"));
 app.use("/email", require("./email/email.controller"));
 app.use("/azure", require("./azure/azure.controller"));
 
